@@ -253,9 +253,6 @@ endef
 combo_target := HOST_
 include $(BUILD_SYSTEM)/combo/select.mk
 
-# on windows, the tools have .exe at the end, and we depend on the
-# host config stuff being done first
-
 combo_target := TARGET_
 include $(BUILD_SYSTEM)/combo/select.mk
 
@@ -344,40 +341,14 @@ EMMA_JAR := external/emma/lib/emma$(COMMON_JAVA_PACKAGE_SUFFIX)
 
 YACC_HEADER_SUFFIX:= .hpp
 
-# Don't use column under Windows, cygwin or not
-ifeq ($(HOST_OS),windows)
-COLUMN:= cat
-else
 COLUMN:= column
-endif
 
 OLD_FLEX := prebuilts/misc/$(HOST_PREBUILT_TAG)/flex/flex-2.5.4a$(HOST_EXECUTABLE_SUFFIX)
-
-ifeq ($(HOST_OS),darwin)
-# Mac OS' screwy version of java uses a non-standard directory layout
-# and doesn't even seem to have tools.jar.  On the other hand, javac seems
-# to be able to magically find the classes in there, wherever they are, so
-# leave this blank
-HOST_JDK_TOOLS_JAR :=
-else
-HOST_JDK_TOOLS_JAR:= $(shell $(BUILD_SYSTEM)/find-jdk-tools-jar.sh)
-ifeq ($(wildcard $(HOST_JDK_TOOLS_JAR)),)
-$(error Error: could not find jdk tools.jar, please install JDK6, \
-    which you can download from java.sun.com)
-endif
-endif
 
 # Is the host JDK 64-bit version?
 HOST_JDK_IS_64BIT_VERSION :=
 ifneq ($(filter 64-Bit, $(shell java -version 2>&1)),)
 HOST_JDK_IS_64BIT_VERSION := true
-endif
-
-# It's called md5 on Mac OS and md5sum on Linux
-ifeq ($(HOST_OS),darwin)
-MD5SUM:=md5 -q
-else
-MD5SUM:=md5sum
 endif
 
 APICHECK_CLASSPATH := $(HOST_JDK_TOOLS_JAR)

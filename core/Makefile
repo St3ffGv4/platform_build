@@ -1464,18 +1464,9 @@ sdk_dir := $(HOST_OUT)/sdk
 # Build a name that looks like:
 #
 #     linux-x86   --> android-sdk_12345_linux-x86
-#     darwin-x86  --> android-sdk_12345_mac-x86
-#     windows-x86 --> android-sdk_12345_windows
 #
 sdk_name := android-sdk_$(FILE_NAME_TAG)
-ifeq ($(HOST_OS),darwin)
-  INTERNAL_SDK_HOST_OS_NAME := mac
-else
   INTERNAL_SDK_HOST_OS_NAME := $(HOST_OS)
-endif
-ifneq ($(HOST_OS),windows)
-  INTERNAL_SDK_HOST_OS_NAME := $(INTERNAL_SDK_HOST_OS_NAME)-$(HOST_ARCH)
-endif
 sdk_name := $(sdk_name)_$(INTERNAL_SDK_HOST_OS_NAME)
 
 sdk_dep_file := $(sdk_dir)/sdk_deps.mk
@@ -1591,14 +1582,9 @@ $(INTERNAL_SDK_TARGET): $(deps)
 	) || ( rm -rf $(PRIVATE_DIR) $@ && exit 44 )
 
 
-# Is a Windows SDK requested? If so, we need some definitions from here
-# in order to find the Linux SDK used to create the Windows one.
 MAIN_SDK_NAME := $(sdk_name)
 MAIN_SDK_DIR  := $(sdk_dir)
 MAIN_SDK_ZIP  := $(INTERNAL_SDK_TARGET)
-ifneq ($(filter win_sdk,$(MAKECMDGOALS)),)
-include $(TOPDIR)development/build/tools/windows_sdk.mk
-endif
 
 # -----------------------------------------------------------------
 # Findbugs

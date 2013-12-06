@@ -20,7 +20,7 @@
 #	combo_target -- prefix for final variables (HOST_ or TARGET_)
 #
 
-# Build a target string like "linux-arm" or "darwin-x86".
+# Build a target string like "linux-arm".
 combo_os_arch := $($(combo_target)OS)-$($(combo_target)ARCH)
 
 # Set reasonable defaults for the various variables
@@ -78,11 +78,6 @@ ifneq ($(USE_CCACHE),)
   export CCACHE_BASEDIR := /
 
   CCACHE_HOST_TAG := $(HOST_PREBUILT_TAG)
-  # If we are cross-compiling Windows binaries on Linux
-  # then use the linux ccache binary instead.
-  ifeq ($(HOST_OS)-$(BUILD_OS),windows-linux)
-    CCACHE_HOST_TAG := linux-$(BUILD_ARCH)
-  endif
   ccache := prebuilts/misc/$(CCACHE_HOST_TAG)/ccache/ccache
   # Check that the executable is here.
   ccache := $(strip $(wildcard $(ccache)))

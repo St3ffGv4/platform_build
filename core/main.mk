@@ -109,22 +109,6 @@ ifneq ($(VERSION_CHECK_SEQUENCE_NUMBER),$(VERSIONS_CHECKED))
 
 $(info Checking build tools versions...)
 
-ifneq ($(HOST_OS),windows)
-ifneq ($(HOST_OS)-$(HOST_ARCH),darwin-ppc)
-# check for a case sensitive file system
-ifneq (a,$(shell mkdir -p $(OUT_DIR) ; \
-                echo a > $(OUT_DIR)/casecheck.txt; \
-                    echo B > $(OUT_DIR)/CaseCheck.txt; \
-                cat $(OUT_DIR)/casecheck.txt))
-$(warning ************************************************************)
-$(warning You are building on a case-insensitive filesystem.)
-$(warning Please move your source tree to a case-sensitive filesystem.)
-$(warning ************************************************************)
-$(error Case-insensitive filesystems not supported)
-endif
-endif
-endif
-
 # Make sure that there are no spaces in the absolute path; the
 # build system can't deal with them.
 ifneq ($(words $(shell pwd)),1)
@@ -394,21 +378,6 @@ ifeq ($(filter-out $(INTERNAL_MODIFIER_TARGETS),$(MAKECMDGOALS)),)
 .PHONY: $(INTERNAL_MODIFIER_TARGETS)
 $(INTERNAL_MODIFIER_TARGETS): $(DEFAULT_GOAL)
 endif
-
-# Bring in all modules that need to be built.
-ifeq ($(HOST_OS)-$(HOST_ARCH),darwin-ppc)
-SDK_ONLY := true
-$(info Building the SDK under darwin-ppc is actually obsolete and unsupported.)
-$(error stop)
-endif
-
-ifeq ($(HOST_OS),windows)
-SDK_ONLY := true
-endif
-
-ifeq ($(SDK_ONLY),true)
-include $(TOPDIR)sdk/build/windows_sdk_whitelist.mk
-include $(TOPDIR)development/build/windows_sdk_whitelist.mk
 
 # Exclude tools/acp when cross-compiling windows under linux
 ifeq ($(findstring Linux,$(UNAME)),)

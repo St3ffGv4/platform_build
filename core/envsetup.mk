@@ -40,26 +40,9 @@ UNAME := $(shell uname -sm)
 ifneq (,$(findstring Linux,$(UNAME)))
 	HOST_OS := linux
 endif
-ifneq (,$(findstring Darwin,$(UNAME)))
-	HOST_OS := darwin
-endif
-ifneq (,$(findstring Macintosh,$(UNAME)))
-	HOST_OS := darwin
-endif
-ifneq (,$(findstring CYGWIN,$(UNAME)))
-	HOST_OS := windows
-endif
 
 # BUILD_OS is the real host doing the build.
 BUILD_OS := $(HOST_OS)
-
-# Under Linux, if USE_MINGW is set, we change HOST_OS to Windows to build the
-# Windows SDK. Only a subset of tools and SDK will manage to build properly.
-ifeq ($(HOST_OS),linux)
-ifneq ($(USE_MINGW),)
-	HOST_OS := windows
-endif
-endif
 
 ifeq ($(HOST_OS),)
 $(error Unable to determine HOST_OS from uname -sm: $(UNAME)!)
@@ -94,11 +77,7 @@ endif
 
 # This is the standard way to name a directory containing prebuilt host
 # objects. E.g., prebuilt/$(HOST_PREBUILT_TAG)/cc
-ifeq ($(HOST_OS),windows)
-  HOST_PREBUILT_TAG := windows
-else
-  HOST_PREBUILT_TAG := $(HOST_OS)-$(HOST_ARCH)
-endif
+HOST_PREBUILT_TAG := $(HOST_OS)-$(HOST_ARCH)
 
 # TARGET_COPY_OUT_* are all relative to the staging directory, ie PRODUCT_OUT.
 # Define them here so they can be used in product config files.

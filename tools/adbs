@@ -62,12 +62,6 @@ def CallObjdump(lib, addr):
 
   unknown = "(unknown)"
   uname = os.uname()[0]
-  if uname == "Darwin":
-    proc = os.uname()[-1]
-    if proc == "i386":
-      uname = "darwin-x86"
-    else:
-      uname = "darwin-ppc"
   elif uname == "Linux":
     uname = "linux-x86"
   if lib != "":
@@ -136,8 +130,6 @@ def SetupToolsPath():
   global symbols_dir
 
   uname = os.uname()[0]
-  if uname == "Darwin":
-    uname = "darwin-x86"
   elif uname == "Linux":
     uname = "linux-x86"
   gcc_version = os.environ["TARGET_GCC_VERSION"]

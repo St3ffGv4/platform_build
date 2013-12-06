@@ -4,12 +4,6 @@ include $(CLEAR_VARS)
 LOCAL_SRC_FILES:= \
 	CopyFile.c
 
-ifeq ($(HOST_OS),cygwin)
-LOCAL_CFLAGS += -DWIN32_EXE
-endif
-ifeq ($(HOST_OS),darwin)
-LOCAL_CFLAGS += -DMACOSX_RSRC
-endif
 ifeq ($(HOST_OS),linux)
 endif
 
