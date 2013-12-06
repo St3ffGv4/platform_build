@@ -15,9 +15,7 @@
 #
 
 # This is a build configuration for a full-featured build of the
-# Open-Source part of the tree. It's geared toward a US-centric
-# build quite specifically for the emulator, and might not be
-# entirely appropriate to inherit from for on-device configurations.
+# Open-Source part of the tree.
 
 PRODUCT_PACKAGES := \
     VoiceDialer
@@ -27,7 +25,7 @@ PRODUCT_PROPERTY_OVERRIDES := \
     ro.com.android.dataroaming=true
 
 PRODUCT_COPY_FILES := \
-    device/generic/goldfish/data/etc/apns-conf.xml:system/etc/apns-conf.xml
+    build/tools/prebuilt-xml/apns-conf.xml:system/etc/apns-conf.xml
 
 $(call inherit-product, $(SRC_TARGET_DIR)/product/aosp_base.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/telephony.mk)

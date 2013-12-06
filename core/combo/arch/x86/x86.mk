@@ -2,10 +2,6 @@
 # base 'x86' platform ABI. This one must *strictly* match the NDK x86 ABI
 # which mandates specific CPU extensions to be available.
 #
-# It is also used to build full_x86-eng / sdk_x86-eng platform images that
-# are run in the emulator under KVM emulation (i.e. running directly on
-# the host development machine's CPU).
-#
 
 # If your target device doesn't support the four following features, then
 # it cannot be compatible with the NDK x86 ABI. You should define a new

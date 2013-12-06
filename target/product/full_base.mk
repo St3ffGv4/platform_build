@@ -15,9 +15,7 @@
 #
 
 # This is a build configuration for a full-featured build of the
-# Open-Source part of the tree. It's geared toward a US-centric
-# build of the emulator, but all those aspects can be overridden
-# in inherited configurations.
+# Open-Source part of the tree.
 
 PRODUCT_PACKAGES := \
     libfwdlockengine \

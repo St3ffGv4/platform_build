@@ -2,7 +2,7 @@ function hmm() {
 cat <<EOF
 Invoke ". build/envsetup.sh" from your shell to add the following functions to your environment:
 - lunch:   lunch <product_name>-<build_variant>
-- tapas:   tapas [<App1> <App2> ...] [arm|x86|mips|armv5] [eng|userdebug|user]
+- tapas:   tapas [<App1> <App2> ...] [arm|armv5] [eng|userdebug|user]
 - croot:   Changes directory to the top of the tree.
 - m:       Makes from the top of the tree.
 - mm:      Builds all of the modules in the current directory, but not their dependencies.
@@ -130,8 +130,6 @@ function setpaths()
             ;;
         arm) toolchaindir=arm/arm-linux-androideabi-$targetgccversion/bin
             ;;
-        mips) toolchaindir=mips/mipsel-linux-android-$targetgccversion/bin
-            ;;
         *)
             echo "Can't find toolchain for unknown architecture: $ARCH"
             toolchaindir=xxxxxxxxx
@@ -150,15 +148,12 @@ function setpaths()
                  ARM_EABI_TOOLCHAIN_PATH=":$gccprebuiltdir/$toolchaindir"
             fi
             ;;
-        mips) toolchaindir=mips/mips-eabi-4.4.3/bin
-            ;;
         *)
             # No need to set ARM_EABI_TOOLCHAIN for other ARCHs
             ;;
     esac
 
     export ANDROID_TOOLCHAIN=$ANDROID_EABI_TOOLCHAIN
-    export ANDROID_QTOOLS=$T/development/emulator/qtools
     export ANDROID_DEV_SCRIPTS=$T/development/scripts:$T/prebuilts/devtools/tools
     export ANDROID_BUILD_PATHS=$(get_build_var ANDROID_BUILD_PATHS):$ANDROID_QTOOLS:$ANDROID_TOOLCHAIN$ARM_EABI_TOOLCHAIN_PATH$CODE_REVIEWS:$ANDROID_DEV_SCRIPTS:
     export PATH=$ANDROID_BUILD_PATHS$PATH
@@ -427,9 +422,6 @@ function add_lunch_combo()
 
 # add the default one here
 add_lunch_combo aosp_arm-eng
-add_lunch_combo aosp_x86-eng
-add_lunch_combo aosp_mips-eng
-add_lunch_combo vbox_x86-eng
 
 function print_lunch_menu()
 {
@@ -540,9 +532,9 @@ complete -F _lunch lunch
 # Run tapas with one ore more app names (from LOCAL_PACKAGE_NAME)
 function tapas()
 {
-    local arch=$(echo -n $(echo $* | xargs -n 1 echo | \grep -E '^(arm|x86|mips|armv5)$'))
+    local arch=$(echo -n $(echo $* | xargs -n 1 echo | \grep -E '^(arm|armv5)$'))
     local variant=$(echo -n $(echo $* | xargs -n 1 echo | \grep -E '^(user|userdebug|eng)$'))
-    local apps=$(echo -n $(echo $* | xargs -n 1 echo | \grep -E -v '^(user|userdebug|eng|arm|x86|mips|armv5)$'))
+    local apps=$(echo -n $(echo $* | xargs -n 1 echo | \grep -E -v '^(user|userdebug|eng|arm|armv5)$'))
 
     if [ $(echo $arch | wc -w) -gt 1 ]; then
         echo "tapas: Error: Multiple build archs supplied: $arch"
@@ -555,8 +547,6 @@ function tapas()
 
     local product=full
     case $arch in
-      x86)   product=full_x86;;
-      mips)  product=full_mips;;
       armv5) product=generic_armv5;;
     esac
     if [ -z "$variant" ]; then
@@ -904,7 +894,6 @@ function gdbclient()
    case "$ARCH" in
        x86) GDB=i686-linux-android-gdb;;
        arm) GDB=arm-linux-androideabi-gdb;;
-       mips) GDB=mipsel-linux-android-gdb;;
        *) echo "Unknown arch $ARCH"; return 1;;
    esac
 
@@ -1054,7 +1043,6 @@ function tracedmdump()
     fi
     local prebuiltdir=$(getprebuilt)
     local arch=$(gettargetarch)
-    local KERNEL=$T/prebuilts/qemu-kernel/$arch/vmlinux-qemu
 
     local TRACE=$1
     if [ ! "$TRACE" ] ; then
@@ -1077,7 +1065,7 @@ function tracedmdump()
     post_trace $TRACE
     if [ $? -ne 0 ]; then
         echo "***"
-        echo "*** Error: malformed trace.  Did you remember to exit the emulator?"
+        echo "*** Error: malformed trace."
         echo "***"
         return
     fi
@@ -1092,7 +1080,7 @@ function tracedmdump()
     echo "    traceview $TRACE/dmtrace"
 }
 
-# communicate with a running device or emulator, set up necessary state,
+# communicate with a running device, set up necessary state,
 # and run the hat command.
 function runhat()
 {

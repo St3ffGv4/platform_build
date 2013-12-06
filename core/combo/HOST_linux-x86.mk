@@ -37,8 +37,6 @@ endif # $(HOST_TOOLCHAIN_PREFIX)/gcc exists
 ifneq ($(strip $(BUILD_HOST_64bit)),)
 # By default we build everything in 32-bit, because it gives us
 # more consistency between the host tools and the target.
-# BUILD_HOST_64bit=1 overrides it for tool like emulator
-# which can benefit from 64-bit host arch.
 HOST_GLOBAL_CFLAGS += -m64
 HOST_GLOBAL_LDFLAGS += -m64
 else

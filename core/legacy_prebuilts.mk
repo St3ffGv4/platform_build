@@ -45,8 +45,6 @@ GRANDFATHERED_ALL_PREBUILT := \
 	gralloc.tegra.so \
 	hwcomposer.tegra.so \
 	ime \
-	init.goldfish.rc \
-	init.goldfish.sh \
 	init.olympus.rc \
 	init.sholes.rc \
 	init.stingray.rc \
@@ -82,7 +80,6 @@ GRANDFATHERED_ALL_PREBUILT := \
 	suplcerts.bks \
 	svc \
 	tcmd \
-	ueventd.goldfish.rc \
 	ueventd.olympus.rc \
 	ueventd.stingray.rc \
 	vold.fstab \

@@ -184,29 +184,8 @@ $(info ************************************************************)
 $(error stop)
 endif
 
-ifndef BUILD_EMULATOR
-ifeq (darwin,$(HOST_OS))
-GCC_REALPATH = $(realpath $(shell which $(HOST_CC)))
-ifneq ($(findstring llvm-gcc,$(GCC_REALPATH)),)
-  # Using LLVM GCC results in a non functional emulator due to it
-  # not honouring global register variables
-  $(warning ****************************************)
-  $(warning * gcc is linked to llvm-gcc which will *)
-  $(warning * not create a useable emulator.       *)
-  $(warning ****************************************)
-  BUILD_EMULATOR := false
-else
-  BUILD_EMULATOR := true
-endif
-else   # HOST_OS is not darwin
-  BUILD_EMULATOR := true
-endif  # HOST_OS is darwin
-endif
-
 $(shell echo 'VERSIONS_CHECKED := $(VERSION_CHECK_SEQUENCE_NUMBER)' \
         > $(OUT_DIR)/versions_checked.mk)
-$(shell echo 'BUILD_EMULATOR ?= $(BUILD_EMULATOR)' \
-        >> $(OUT_DIR)/versions_checked.mk)
 endif
 
 # These are the modifier targets that don't do anything themselves, but
@@ -855,7 +834,6 @@ else # TARGET_BUILD_APPS
   ifneq ($(TARGET_BUILD_PDK),true)
     $(call dist-for-goals, droidcore, \
       $(APPS_ZIP) \
-      $(INTERNAL_EMULATOR_PACKAGE_TARGET) \
       $(PACKAGE_STATS_FILE) \
     )
   endif

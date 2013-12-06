@@ -448,10 +448,7 @@ endif # TARGET_BOOTIMAGE_USE_EXT2
 
 else	# TARGET_NO_KERNEL
 # HACK: The top-level targets depend on the bootimage.  Not all targets
-# can produce a bootimage, though, and emulator targets need the ramdisk
-# instead.  Fake it out by calling the ramdisk the bootimage.
-# TODO: make the emulator use bootimages, and make mkbootimg accept
-#       kernel-less inputs.
+# can produce a bootimage.  Fake it out by calling the ramdisk the bootimage.
 INSTALLED_BOOTIMAGE_TARGET := $(INSTALLED_RAMDISK_TARGET)
 endif
 
@@ -546,7 +543,6 @@ endif  # TARGET_BUILD_APPS
 # make the target NOTICE files depend on this particular file too, which will
 # then be in the right directory for the find in combine-notice-files to work.
 $(kernel_notice_file): \
-	    prebuilts/qemu-kernel/arm/LINUX_KERNEL_COPYING \
 	    | $(ACP)
 	@echo Copying: $@
 	$(hide) mkdir -p $(dir $@)
@@ -1450,25 +1446,6 @@ endif # TARGET_BUILD_APPS
 .PHONY: dalvikfiles
 dalvikfiles: $(INTERNAL_DALVIK_MODULES)
 
-# -----------------------------------------------------------------
-# The emulator package
-ifeq ($(BUILD_EMULATOR),true)
-INTERNAL_EMULATOR_PACKAGE_FILES += \
-        $(HOST_OUT_EXECUTABLES)/emulator$(HOST_EXECUTABLE_SUFFIX) \
-        prebuilts/qemu-kernel/$(TARGET_ARCH)/kernel-qemu \
-        $(INSTALLED_RAMDISK_TARGET) \
-		$(INSTALLED_SYSTEMIMAGE) \
-		$(INSTALLED_USERDATAIMAGE_TARGET)
-
-name := $(TARGET_PRODUCT)-emulator-$(FILE_NAME_TAG)
-
-INTERNAL_EMULATOR_PACKAGE_TARGET := $(PRODUCT_OUT)/$(name).zip
-
-$(INTERNAL_EMULATOR_PACKAGE_TARGET): $(INTERNAL_EMULATOR_PACKAGE_FILES)
-	@echo "Package: $@"
-	$(hide) zip -qj $@ $(INTERNAL_EMULATOR_PACKAGE_FILES)
-
-endif
 # -----------------------------------------------------------------
 # Old PDK stuffs, retired
 # The pdk package (Platform Development Kit)

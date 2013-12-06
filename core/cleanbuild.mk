@@ -199,11 +199,9 @@ installclean_files := \
 	$(PRODUCT_OUT)/obj/ETC/sepolicy_intermediates
 
 # The files/dirs to delete during a dataclean, which removes any files
-# in the staging and emulator data partitions.
+# in the staging.
 dataclean_files := \
-	$(PRODUCT_OUT)/data/* \
-	$(PRODUCT_OUT)/data-qemu/* \
-	$(PRODUCT_OUT)/userdata-qemu.img
+	$(PRODUCT_OUT)/data/*
 
 # make sure *_OUT is set so that we won't result in deleting random parts
 # of the filesystem.
@@ -216,7 +214,6 @@ endif
 dataclean: FILES := $(dataclean_files)
 dataclean:
 	$(hide) rm -rf $(FILES)
-	@echo "Deleted emulator userdata images."
 
 .PHONY: installclean
 installclean: FILES := $(installclean_files)

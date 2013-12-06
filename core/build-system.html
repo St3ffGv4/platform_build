@@ -104,9 +104,7 @@ This means:</p>
     Windows.</li>
     <li>The build system will need to be able to build the OS on Linux, and in
     the short-term, MacOS.  Note that this is a conscious decision to stop
-    building the OS on Windows.  We are going to rely on the emulator there
-    and not attempt to use the simulator.  This is a requirement change now
-    that the emulator story is looking brighter.</li>
+    building the OS on Windows.</li>
 </ul>
 <h3>Non-Recursive Make</h3>
 <p>To achieve the objectives, the build system will be rewritten to use make
@@ -323,9 +321,7 @@ out/&lt;configuration&gt;/</code></li>
 and intermediate files for all configurations.  This is the same as
 <code>rm -rf out/</code>.</li>
 <li><b>dataclean</b> - <code>make dataclean</code> deletes contents of the data 
-directory inside the current combo directory.  This is especially useful on the
-simulator and emulator, where the persistent data remains present between 
-builds.</li>
+directory inside the current combo directory.</li>
 <li><b>showcommands</b> - <code>showcommands</code> is a modifier target
 which causes the build system to show the actual command lines for the build
 steps, instead of the brief descriptions.  Most people don't like seeing the

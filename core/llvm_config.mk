@@ -41,32 +41,6 @@ ifeq ($(TARGET_ARCH),arm)
     -fno-align-jumps \
     -Wa,--noexecstack
 endif
-ifeq ($(TARGET_ARCH),mips)
-  RS_TRIPLE := mipsel-unknown-linux
-  CLANG_CONFIG_EXTRA_ASFLAGS += \
-    -target mipsel-linux-androideabi \
-    -nostdlibinc \
-    -B$(TARGET_TOOLCHAIN_ROOT)/mipsel-linux-android/bin
-  CLANG_CONFIG_EXTRA_CFLAGS += $(CLANG_CONFIG_EXTRA_ASFLAGS)
-  CLANG_CONFIG_EXTRA_LDFLAGS += \
-    -target mipsel-linux-androideabi \
-    -B$(TARGET_TOOLCHAIN_ROOT)/mipsel-linux-android/bin
-  CLANG_CONFIG_UNKNOWN_CFLAGS += \
-    -EL \
-    -mips32 \
-    -mips32r2 \
-    -mhard-float \
-    -fno-strict-volatile-bitfields \
-    -fgcse-after-reload \
-    -frerun-cse-after-loop \
-    -frename-registers \
-    -march=mips32r2 \
-    -mtune=mips32r2 \
-    -march=mips32 \
-    -mtune=mips32 \
-    -msynci \
-    -mno-fused-madd
-endif
 ifeq ($(TARGET_ARCH),x86)
   RS_TRIPLE := i686-unknown-linux
   CLANG_CONFIG_EXTRA_ASFLAGS += \
