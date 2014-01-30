@@ -83,6 +83,7 @@ endif # CALLED_FROM_SETUP
 
 ifneq ($(PRINT_BUILD_CONFIG),)
 HOST_OS_EXTRA:=$(shell python -c "import platform; print(platform.platform())")
+$(info $(space))
 $(info =====================================================================)
 $(info |              THE FREAX PROJECT ~ MoltenMotherBoard                |)
 $(info ---------------------------------------------------------------------)
@@ -98,4 +99,5 @@ $(info -> ENVIRONMENT OS EXTRA = $(HOST_OS_EXTRA))
 $(info -> BUILD ID = $(BUILD_ID))
 $(info -> OUT PATH = $(OUT_DIR))
 $(info =====================================================================)
+$(info $(space))
 endif
