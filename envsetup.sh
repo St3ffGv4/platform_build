@@ -413,18 +413,17 @@ function add_lunch_combo()
         fi
     done
     LUNCH_MENU_CHOICES=(${LUNCH_MENU_CHOICES[@]} $new_combo)
-}
-
-# add the default one here
-add_lunch_combo aosp_arm-eng
+}	
 
 function print_lunch_menu()
 {
     local uname=$(uname)
     echo
-    echo "You're building on" $uname
+    echo "====================================================================="
+    echo "|              THE FREAX PROJECT ~ LUNCH Menu                       |"
+    echo "====================================================================="
+    echo "--> Pick a combo:"
     echo
-    echo "Lunch menu... pick a combo:"
 
     local i=1
     local choice
@@ -445,7 +444,7 @@ function lunch()
         answer=$1
     else
         print_lunch_menu
-        echo -n "Which would you like? [aosp_arm-eng] "
+        echo -n "Device/Combo you want to build: "
         read answer
     fi
 
@@ -453,7 +452,9 @@ function lunch()
 
     if [ -z "$answer" ]
     then
-        selection=aosp_arm-eng
+        echo -n "[!] No combo chosen."
+	echo
+	return 1
     elif (echo -n $answer | grep -q -e "^[0-9][0-9]*$")
     then
         if [ $answer -le ${#LUNCH_MENU_CHOICES[@]} ]
