@@ -112,9 +112,6 @@ ifeq ($(LOCAL_MODULE_PATH),)
   endif
   endif
   install_path_var := $(my_prefix)OUT$(partition_tag)_$(LOCAL_MODULE_CLASS)
-  ifeq (true,$(LOCAL_PRIVILEGED_MODULE))
-    install_path_var := $(install_path_var)_PRIVILEGED
-  endif
 
   LOCAL_MODULE_PATH := $($(install_path_var))
   ifeq ($(strip $(LOCAL_MODULE_PATH)),)
